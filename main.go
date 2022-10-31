@@ -4,18 +4,29 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	content, err := ioutil.ReadFile("input.txt")
+
+	if len(os.Args) != 4 {
+		fmt.Print("Incorrect number of arguments.\n")
+		os.Exit(1)
+	}
+	fileName := os.Args[1]
+	a, _ := strconv.Atoi(os.Args[2])
+	b, _ := strconv.Atoi(os.Args[3])
+
+	content, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		log.Fatal(err)
 	}
 	lines := strings.Split(string(content), "\n")
 
-	commandAnalyzer(lines, 0, 0, 0)
+	commandAnalyzer(lines, 0, a, b)
+
 }
 
 func commandAnalyzer(text []string, counterLine int, a int, b int) {
@@ -54,7 +65,8 @@ func commandAnalyzer(text []string, counterLine int, a int, b int) {
 		}
 
 		fmt.Println("Jump to: ", aux)
-		fmt.Println("a = ", a, "b = ", b, "\n")
+		fmt.Println("a = ", a, "b = ", b)
+		fmt.Println()
 		commandAnalyzer(text, aux, a, b)
 	} else {
 		fmt.Println("Program finished. \na = ", a, "b = ", b)
